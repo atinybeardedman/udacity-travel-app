@@ -2,10 +2,27 @@ import { getFormElements } from './helpers';
 let cachedCountries;
 const dateInput = getFormElements('dateInput')
 const button = document.getElementById('submit');
-function updateCountries(){
-    return fetch('http://localhost:8081/countries')
+
+function setCountries() {
+    if(!window.localStorage.getItem('countries')){
+        return fetch('http://localhost:8081/countries')
         .then(resp => resp.json())
         .then(countries => {
+            window.localStorage.setItem('countries', JSON.stringify(countries));
+        });
+    }
+    return Promise.resolve();
+}
+
+function pickRandomCountry(countries){
+    const choice = Math.floor(Math.random()*countries.length);
+    return countries[choice].code;
+}
+
+function updateCountries(){
+    return setCountries()
+        .then(() => {
+            const countries = JSON.parse(window.localStorage.getItem('countries'));
             cachedCountries = countries;
             const frag = document.createDocumentFragment();
             for(const country of countries){
@@ -18,7 +35,7 @@ function updateCountries(){
             countrySelect.appendChild(frag);
             countrySelect.classList.remove('is-loading');
             countrySelect.disabled = false;
-            countrySelect.value = 'AU';
+            countrySelect.value = pickRandomCountry(countries);
             countrySelect.dispatchEvent(new Event('change'));
         });
 }

@@ -2,9 +2,6 @@ import './styles/main.scss';
 import * as updateUIFns from './js/updateUI';
 import { getFormElements } from './js/helpers'; 
 
-updateUIFns.updateCountries();
-updateUIFns.updateDate();
-
 window.addEventListener('DOMContentLoaded', () => {
     const elements = getFormElements();
     for(const elName of Object.keys(elements)){
@@ -15,6 +12,9 @@ window.addEventListener('DOMContentLoaded', () => {
             el.addEventListener('change', updateUIFns.updateCityPlaceholder);
         }
     }
+updateUIFns.updateCountries();
+updateUIFns.updateDate();
+
 
 })
 
