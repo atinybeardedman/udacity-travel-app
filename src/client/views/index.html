@@ -54,61 +54,96 @@
       </section>
       <section class="section">
         <div class="container">
-            <div class="columns is-cenetered">
-                <div class="column">
-                    <div class="card">
-                        <div class="card-hearder">
-                            <h1 class="card-header-title">
-                                New Trip
-                            </h1>
-                        </div>
-                        <div class="card-content">
-
-                            <form>
-                              <div class="field">
-                                <label for="location" class="label">Location</label>
-                                <div class="control">
-                                  <input
-                                    id="location"
-                                    placeholder="Sydney, Australia"
-                                    type="text"
-                                    class="input"
-                                  />
-                                </div>
-                              </div>
-                              <div class="field">
-                                <label for="departureDate" class="label"
-                                  >When are you leaving?</label
-                                >
-                                <div class="control">
-                                  <input
-                                    id="departureDate"
-                                    placeholder="06/01/2020"
-                                    type="date"
-                                    class="input"
-                                  />
-                                </div>
-                              </div>
-                              <div class="field">
-                                <label for="length" class="label">How many days?</label>
-                                <div class="control">
-                                  <input
-                                    id="length"
-                                    placeholder="7"
-                                    type="number"
-                                    class="input"
-                                  />
-                                </div>
-                              </div>
-                            </form>
-                        </div>
-                    </div>
+          <div class="columns is-centered">
+            <div class="column">
+              <div class="card">
+                <div class="card-hearder">
+                  <h1 class="card-header-title">
+                    New Trip
+                  </h1>
                 </div>
+                <div class="card-content">
+                  <form>
+                    <div class="field">
+                      <label for="country" class="label">Country</label>
+                      <div class="control">
+                        <div class="select">
+                          <select
+                            disabled
+                            id="countrySelect"
+                            data-id="country"
+                            class="is-loading"
+                            onchange="Client.updateUIFns.updateCityPlaceholder(event)"
+                          >
+                            <option disabled
+                              >Please Select A Country First</option
+                            >
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label for="city" class="label">City</label>
+                      <div class="control">
+                        <input
+                          id="cityInput"
+                          placeholder="Loading Cities..."
+                          type="text"
+                          class="input"
+                          data-id="city"
+                          onblur="Client.updateUIFns.onBlur(event)"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label for="dateInput" class="label"
+                        >When are you leaving?</label
+                      >
+                      <div class="control">
+                        <input
+                          id="dateInput"
+                          type="date"
+                          class="input"
+                          data-id="date"
+                          onblur="Client.updateUIFns.onBlur(event)"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label for="lengthInput" class="label">How many days?</label>
+                      <div class="control">
+                        <input
+                          required
+                          data-id="length"
+                          id="lengthInput"
+                          min="1"
+                          value="7"
+                          type="number"
+                          class="input"
+                          onblur="Client.updateUIFns.onBlur(event)"
+                        />
+                      </div>
+                    </div>
+                    <div class="class control">
+                      <button id="submit" disabled class="button is-primary">
+                        Submit
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
       </section>
     </main>
   </body>
+  <script>
+    Client.updateUIFns.updateCountries();
+    Client.updateUIFns.updateDate();
+  </script>
   <!-- <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
