@@ -7,7 +7,10 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OpitimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin');
 module.exports = {
-    entry: './src/client/index.js',
+    entry:{
+        app: './src/client/index.js',
+        trips: './src/client/trips.js'
+    },
     mode: 'production',
     optimization: {
         minimizer: [new TerserPlugin(), new OpitimizeCSSAssetsPlugin()]
@@ -29,7 +32,14 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: "./src/client/views/index.html",
             filename: "./index.html",
-            title: "Travel App"
+            title: 'Travel App',
+            chunks: ['app']
+        }),
+        new HtmlWebPackPlugin({
+            template: "./src/client/views/my-trips.html",
+            filename: "./trips.html",
+            title: 'My Trips',
+            chunks: ['trips']
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css'
@@ -40,7 +50,5 @@ module.exports = {
     output: {
         filename: '[name].[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
-        libraryTarget: 'var',
-        library: 'Client'
     }
 }

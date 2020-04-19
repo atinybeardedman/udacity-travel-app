@@ -73,7 +73,6 @@
                             id="countrySelect"
                             data-id="country"
                             class="is-loading"
-                            onchange="Client.updateUIFns.updateCityPlaceholder(event)"
                           >
                             <option disabled
                               >Please Select A Country First</option
@@ -91,7 +90,6 @@
                           type="text"
                           class="input"
                           data-id="city"
-                          onblur="Client.updateUIFns.onBlur(event)"
                           required
                         />
                       </div>
@@ -106,7 +104,6 @@
                           type="date"
                           class="input"
                           data-id="date"
-                          onblur="Client.updateUIFns.onBlur(event)"
                           required
                         />
                       </div>
@@ -122,7 +119,6 @@
                           value="7"
                           type="number"
                           class="input"
-                          onblur="Client.updateUIFns.onBlur(event)"
                         />
                       </div>
                     </div>
@@ -140,10 +136,6 @@
       </section>
     </main>
   </body>
-  <script>
-    Client.updateUIFns.updateCountries();
-    Client.updateUIFns.updateDate();
-  </script>
   <!-- <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {

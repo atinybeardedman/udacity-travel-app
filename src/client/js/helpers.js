@@ -1,5 +1,5 @@
 const elements = {};
-const ids = ['countrySelect', 'cityInput', 'departureInput', 'lengthInput'];
+const ids = ['countrySelect', 'cityInput', 'dateInput', 'lengthInput'];
 function getFormElements(name=null){
     if(name){
         if(!elements.hasOwnProperty(name)){

@@ -6,7 +6,10 @@ const {
 } = require('clean-webpack-plugin')
 
 module.exports = {
-    entry: './src/client/index.js',
+    entry:{
+        app: './src/client/app.js',
+        trips: './src/client/trips.js'
+    },
     mode: 'development',
     devtool: 'source-map',
     stats: 'verbose',
@@ -26,12 +29,19 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: "./src/client/views/index.html",
             filename: "./index.html",
-            title: 'Development'
+            title: 'Development Home',
+            chunks: ['app']
+        }),
+        new HtmlWebPackPlugin({
+            template: "./src/client/views/my-trips.html",
+            filename: "./trips.html",
+            title: 'Development Trips',
+            chunks: ['trips']
         }),
         new CleanWebpackPlugin()
     ],
     output: {
-        libraryTarget: 'var',
-        library: 'Client',
+       filename: "./dist/[name].js",
+       path: __dirname + '/dist'
     },
 }
