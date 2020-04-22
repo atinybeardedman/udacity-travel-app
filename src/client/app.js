@@ -1,6 +1,7 @@
 import './styles/main.scss';
 import * as updateUIFns from './js/updateUI';
 import { getFormElements } from './js/helpers'; 
+import { submitForm } from './js/submitForm';
 
 window.addEventListener('DOMContentLoaded', () => {
     const elements = getFormElements();
@@ -12,6 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
             el.addEventListener('change', updateUIFns.updateCityPlaceholder);
         }
     }
+    document.getElementById('submit').addEventListener('click', submitForm);
 updateUIFns.updateCountries();
 updateUIFns.updateDate();
 

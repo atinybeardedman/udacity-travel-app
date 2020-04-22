@@ -6,22 +6,27 @@ const elements = getFormElements();
 
 function postTrip({
     location,
-    departure,
+    date,
     length
 }) {
-    return fetch(`localhost:8081/addTrip`, {
+    return fetch(`http://localhost:8081/addTrip`, {
         method: 'POST',
-        data: JSON.stringify({
-            city,
-            country,
-            departure,
+        mode: 'cors', 
+        cache: 'no-cache', 
+        credentials: 'same-origin', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            location,
+            date,
             length
         })
     });
 }
 
 function getPlace(city, country) {
-    return fetch(`localhost:8081/places?city=${city}&country=${country}`)
+    return fetch(`http://localhost:8081/places?city=${city}&country=${country}`)
         .then(resp => resp.json())
         .catch(err => {
             // TODO: handle error
@@ -30,9 +35,11 @@ function getPlace(city, country) {
         .then(resp => resp.geonames[0]);
 }
 
-function submitForm() {
+function submitForm(e) {
+    e.preventDefault();
     const values = {};
-    for (const el of elements) {
+    for (const elName of Object.keys(elements)) {
+        const el = elements[elName];
         if (!el.checkValidity()) {
             return Promise.resolve(false);
         } else {
