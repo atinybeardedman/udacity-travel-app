@@ -9,7 +9,6 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 module.exports = {
     entry:{
         app: './src/client/index.js',
-        trips: './src/client/trips.js'
     },
     mode: 'production',
     optimization: {
@@ -34,12 +33,6 @@ module.exports = {
             filename: "./index.html",
             title: 'Travel App',
             chunks: ['app']
-        }),
-        new HtmlWebPackPlugin({
-            template: "./src/client/views/my-trips.html",
-            filename: "./trips.html",
-            title: 'My Trips',
-            chunks: ['trips']
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css'

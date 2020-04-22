@@ -8,7 +8,6 @@ const {
 module.exports = {
     entry:{
         app: './src/client/app.js',
-        trips: './src/client/trips.js'
     },
     mode: 'development',
     devtool: 'source-map',
@@ -31,12 +30,6 @@ module.exports = {
             filename: "./index.html",
             title: 'Development Home',
             chunks: ['app']
-        }),
-        new HtmlWebPackPlugin({
-            template: "./src/client/views/my-trips.html",
-            filename: "./trips.html",
-            title: 'Development Trips',
-            chunks: ['trips']
         }),
         new CleanWebpackPlugin()
     ],
