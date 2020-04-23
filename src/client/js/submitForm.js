@@ -1,13 +1,16 @@
 import {
-    getFormElements
+    getFormElements, getUnits
 } from './helpers';
+import { addTrip } from './storage';
+import { updateTrips } from './updateUI';
 const elements = getFormElements();
 
 
 function postTrip({
     location,
     date,
-    length
+    length,
+    units
 }) {
     return fetch(`http://localhost:8081/addTrip`, {
         method: 'POST',
@@ -20,7 +23,8 @@ function postTrip({
         body: JSON.stringify({
             location,
             date,
-            length
+            length,
+            units
         })
     });
 }
@@ -37,6 +41,9 @@ function getPlace(city, country) {
 
 function submitForm(e) {
     e.preventDefault();
+    const button =document.getElementById('submit');
+    button.disabled = true;
+    button.classList.add('is-loading');
     const values = {};
     for (const elName of Object.keys(elements)) {
         const el = elements[elName];
@@ -46,14 +53,17 @@ function submitForm(e) {
             values[el.dataset.id] = el.value;
         }
     }
+    values.units = getUnits();
     return getPlace(values.city, values.country)
         .then(location =>
             postTrip({...values, location})
         )
         .then(resp => resp.json())
         .then(resp => {
-            console.log(resp.trip);
-
+            addTrip(resp.trip);
+            updateTrips();
+            button.disabled = false;
+            button.classList.remove('is-loading');
         })
 }
 

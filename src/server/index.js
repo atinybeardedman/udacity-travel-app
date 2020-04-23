@@ -86,8 +86,10 @@ app.get("/places", (req, resp) => {
 });
 
 app.post("/addTrip", (req, resp) => {
-  const { location, date, length } = req.body;
-  const weather$ = getWeather(location.lat, location.lng, date, length);
+  console.log(req.body);
+  const { location, date, length, units } = req.body;
+  const diff = getDiff(date);
+  const weather$ = getWeather(location.lat, location.lng, date, units, diff);
   const photo$ = getPhoto(location.name, location.countryName);
   return Promise.all([weather$, photo$]).then(([weather, photo]) =>{
       resp.send({
@@ -97,7 +99,8 @@ app.post("/addTrip", (req, resp) => {
           date,
           length,
           city: location.name,
-          country: location.countryName
+          country: location.countryName,
+          diff
         },
       })
   }
@@ -112,6 +115,7 @@ function getPhoto(city, country) {
         q: `${city}+${country}`,
         image_type: "photo",
         category: "travel",
+        orientation: "horizontal"
       },
     })
     .then((axResp) => {
@@ -123,9 +127,8 @@ function getPhoto(city, country) {
     });
 }
 
-function getWeather(lat, lon, date, length) {
-  let diff = getDiff(date);
-  diff = diff === 0 ? 1 : diff;
+function getWeather(lat, lon, date, units, diff) {
+  console.log(units);
   if (diff > 16) {
     // use historical data
     const start_date = moment(date).subtract(1, 'year').format("YYYY-MM-DD");
@@ -137,14 +140,15 @@ function getWeather(lat, lon, date, length) {
           lat,
           lon,
           start_date,
-          end_date
+          end_date,
+          units
         },
       })
       .then((axResp) => {
         const weatherData = axResp.data.data[0];
         const high_temp = weatherData.max_temp;
         const low_temp = weatherData.min_temp;
-        return { high_temp, low_temp };
+        return { high_temp, low_temp, units};
       }).catch((err) => {
         console.log(err);
       });
@@ -154,15 +158,16 @@ function getWeather(lat, lon, date, length) {
       .get(weatherForecastUrl, {
         params: {
           key: weatherBitKey,
-          days: diff,
+          days: diff === 0 ? 1 : diff,
           lat,
           lon,
+          units
         },
       })
       .then((axResp) => {
         const weatherData = axResp.data.data;
-        const { high_temp, low_temp } = weatherData[diff - 1];
-        return { high_temp, low_temp };
+        const { high_temp, low_temp } = diff === 0 ? weatherData[0] : weatherData[diff - 1];
+        return { high_temp, low_temp, units };
       })
       .catch((err) => {
         console.log(err);

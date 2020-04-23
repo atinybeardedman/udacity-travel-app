@@ -16,6 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('submit').addEventListener('click', submitForm);
 updateUIFns.updateCountries();
 updateUIFns.updateDate();
+updateUIFns.updateTrips();
 
 
 })

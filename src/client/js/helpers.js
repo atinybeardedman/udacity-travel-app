@@ -16,4 +16,10 @@ function getFormElements(name=null){
     }
 }
 
-module.exports = { getFormElements };
+function getUnits(){
+    const metric = document.getElementById('metric_radio').checked;
+    console.log(metric);
+    return metric ? 'M' : 'I';
+}
+
+export { getFormElements, getUnits };

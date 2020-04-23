@@ -12,7 +12,7 @@
     ></script>
   </head>
   <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <!-- <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a href="" class="navbar-item">
           Logo
@@ -37,14 +37,14 @@
           </a>
         </div>
       </div>
-    </nav>
+    </nav> -->
     <main>
       <section class="hero">
         <div class="hero-body">
           <div class="container">
             <h1 class="title">Trip Planner</h1>
             <h2 class="subtitle">
-              Plan you trip to the destination of your choice.
+              Plan you trip to the destination of your choice. Keep track of all your trips here.
             </h2>
           </div>
         </div>
@@ -106,7 +106,9 @@
                       </div>
                     </div>
                     <div class="field">
-                      <label for="lengthInput" class="label">How many days?</label>
+                      <label for="lengthInput" class="label"
+                        >How many days?</label
+                      >
                       <div class="control">
                         <input
                           required
@@ -119,6 +121,19 @@
                         />
                       </div>
                     </div>
+                    <div class="field">
+                      <label class="label">Weather Units</label>
+                      <div class="control">
+                        <label class="radio">
+                          <input id="metric_radio" checked type="radio" name="units">
+                          Celsius
+                        </label>
+                        <label class="radio">
+                          <input id="imperial_radio" type="radio" name="units">
+                          Fahrenheit
+                        </label>
+                      </div>
+                    </div>
                     <div class="class control">
                       <button id="submit" disabled class="button is-primary">
                         Submit
@@ -129,6 +144,12 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <h1 class="title">My Trips</h1>
+          <div class="columns is-multiline" id="trips-container"></div>
         </div>
       </section>
     </main>
