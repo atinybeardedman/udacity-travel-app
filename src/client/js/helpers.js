@@ -18,7 +18,6 @@ function getFormElements(name=null){
 
 function getUnits(){
     const metric = document.getElementById('metric_radio').checked;
-    console.log(metric);
     return metric ? 'M' : 'I';
 }
 
