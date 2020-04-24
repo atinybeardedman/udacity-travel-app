@@ -12,7 +12,7 @@ function postTrip({
     length,
     units
 }) {
-    return fetch(`http://localhost:8081/addTrip`, {
+    return fetch(`/addTrip`, {
         method: 'POST',
         mode: 'cors', 
         cache: 'no-cache', 
@@ -30,7 +30,7 @@ function postTrip({
 }
 
 function getPlace(city, country) {
-    return fetch(`http://localhost:8081/places?city=${city}&country=${country}`)
+    return fetch(`/places?city=${city}&country=${country}`)
         .then(resp => resp.json())
         .catch(err => {
             // TODO: handle error

@@ -7,7 +7,7 @@ const button = document.getElementById("submit");
 
 function setCountries() {
   if (!window.localStorage.getItem("countries")) {
-    return fetch("http://localhost:8081/countries")
+    return fetch("/countries")
       .then((resp) => resp.json())
       .then((countries) => {
         window.localStorage.setItem("countries", JSON.stringify(countries));
