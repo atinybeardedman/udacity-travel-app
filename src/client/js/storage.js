@@ -1,9 +1,27 @@
+const moment = require("moment");
 function getTrips(){
-    const trips = localStorage.getItem('trips');
+    let trips = localStorage.getItem('trips');
     if(!trips){
         return [];
+    } else {
+        return JSON.parse(trips);
     }
-    return JSON.parse(trips);
+}
+
+function getSplitTrips(){
+    const trips = getTrips();
+    const pastTrips = [];
+    const upcomingTrips = [];
+    for(const trip of trips){
+        const today = moment();
+        const tripEnd = moment(trip.date).add(trip.length, 'days');
+        if(today > tripEnd){
+            pastTrips.push(trip);
+        } else {
+            upcomingTrips.push(trip);
+        }
+    }
+    return {pastTrips, upcomingTrips};
 }
 
 function addTrip(trip){
@@ -23,4 +41,4 @@ function sortTrips(tripA, tripB){
     }
 }
 
-export {getTrips, addTrip};
+export {getTrips, addTrip, getSplitTrips};

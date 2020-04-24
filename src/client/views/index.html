@@ -12,34 +12,8 @@
     ></script>
   </head>
   <body>
-    <!-- <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a href="" class="navbar-item">
-          Logo
-        </a>
-      </div>
-      <a
-        role="button"
-        class="navbar-burger burger"
-        aria-label="menu"
-        aria-expanded="false"
-        data-target="navbarMenu"
-      >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-
-      <div id="navbarMenu" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item" href="index.html">
-            Home
-          </a>
-        </div>
-      </div>
-    </nav> -->
     <main>
-      <section class="hero">
+      <section class="hero is-primary">
         <div class="hero-body">
           <div class="container">
             <h1 class="title">Trip Planner</h1>
@@ -51,14 +25,9 @@
       </section>
       <section class="section">
         <div class="container">
+          <h1 class="title">Plan a Trip</h1>
           <div class="columns is-centered">
             <div class="column">
-              <div class="card">
-                <div class="card-hearder">
-                  <h1 class="card-header-title">
-                    New Trip
-                  </h1>
-                </div>
                 <div class="card-content">
                   <form>
                     <div class="field">
@@ -149,7 +118,9 @@
       <section class="section">
         <div class="container">
           <h1 class="title">My Trips</h1>
-          <div class="columns is-multiline" id="trips-container"></div>
+          <div class="columns is-multiline" id="upcoming-trips"></div>
+          <h1 class="title">Past Trips</h1>
+          <div class="columns is-multiline" id="past-trips"></div>
         </div>
       </section>
     </main>

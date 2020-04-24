@@ -14,38 +14,48 @@ function createCard(trip) {
                     </figure>
                 </div>
                 <div class="card-content">
-                    <h3 class="is-size-3">${getCountdown(trip.date)}</h3>
-                    <p>${
-                      moment(trip.date).format("ll") } -
-                     ${ moment(trip.date).add(trip.length, 'days').format("ll")}
+                    <h3 class="is-size-3">${getCountdown(trip)}</h3>
+                    <p>${moment(trip.date).format("ll")} -
+                     ${moment(trip.date).add(trip.length, "days").format("ll")}
                     </p>
                     <div class="content">
                         Expect temperatures between 
-                        ${ formatTemp(trip.weather.high_temp, trip.weather.units)} and ${formatTemp(trip.weather.low_temp, trip.weather.units)}
+                        ${formatTemp(
+                          trip.weather.high_temp,
+                          trip.weather.units
+                        )} and ${formatTemp(
+    trip.weather.low_temp,
+    trip.weather.units
+  )}
                     </div>
                 </div>
             </div>`;
 }
 
-function getCountdown(datestring) {
+function getCountdown(trip) {
   const now = moment();
-  const tripStart = moment(datestring);
+  const tripStart = moment(trip.date);
   const diff = tripStart.diff(now, "days");
-  if(diff === 0){
-      return 'Leaving Today!';
-  } else if (diff > 0){
-      return `In ${diff} days`;
+  if (diff === 0) {
+    return "Leaving Today!";
+  } else if (diff > 0) {
+    return `In ${diff} days`;
   } else {
-      return `${Math.abs(diff)} days ago`;
+    const pastDiff = Math.abs(diff);
+    if (pastDiff < trip.length) {
+      return "Currently Active!";
+    } else {
+      return `${pastDiff} days ago`;
+    }
   }
 }
 
-function formatTemp(temp, units){
-    if(units === 'I'){
-        return `${temp}  &deg;F`;
-    } else {
-        return `${temp}  &deg;C`;
-    }
+function formatTemp(temp, units) {
+  if (units === "I") {
+    return `${temp}  &deg;F`;
+  } else {
+    return `${temp}  &deg;C`;
+  }
 }
 
 export { createCard };

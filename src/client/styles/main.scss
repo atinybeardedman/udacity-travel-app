@@ -9,8 +9,13 @@
 @import "../../../node_modules/bulma/sass/elements/title.sass";
 @import "../../../node_modules/bulma/sass/elements/content.sass";
 @import "../../../node_modules/bulma/sass/elements/notification.sass";
+@import "../../../node_modules/bulma/sass/elements/image.sass";
 @import "../../../node_modules/bulma/sass/form/_all.sass";
 @import "../../../node_modules/bulma/sass/components/navbar.sass";
 @import "../../../node_modules/bulma/sass/components/card.sass";
 @import "../../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../../node_modules/bulma/sass/layout/section.sass";
+
+#past-trips .card {
+    filter: contrast(0.7);
+}

@@ -1,5 +1,5 @@
 import { getFormElements } from "./helpers";
-import { getTrips } from "./storage";
+import { getSplitTrips } from "./storage";
 import { createCard } from "./card";
 let cachedCountries;
 const dateInput = getFormElements("dateInput");
@@ -81,19 +81,7 @@ function updateButtonState() {
   return button.disabled;
 }
 
-function updateTrips() {
-  const container = document.getElementById("trips-container");
-  container.innerHTML = "";
-  const trips = getTrips();
-  if (trips.length === 0) {
-      const column = document.createElement("div");
-      column.classList.add("column");
-      column.classList.add("is-half");
-      column.innerHTML = '<h2 class="title has-text-centered has-text-grey">No Trips Planned Yet</h2>';
-      container.classList.add('is-centered');
-      container.appendChild(column);
-      
-  } else {
+function addTripCards(trips, container){
     const frag = document.createDocumentFragment();
     container.classList.remove('is-centered');
     for (const trip of trips) {
@@ -105,6 +93,32 @@ function updateTrips() {
       frag.appendChild(column);
     }
     container.appendChild(frag);
+}
+
+function addNoTripPlaceholder(container, type){
+    const column = document.createElement("div");
+      column.classList.add("column");
+      column.classList.add("is-half");
+      column.innerHTML = `<h2 class="title has-text-centered has-text-grey">No ${type} Trips</h2>`;
+      container.classList.add('is-centered');
+      container.appendChild(column);
+}
+
+function updateTrips() {
+  const upcomingContainer = document.getElementById("upcoming-trips");
+  const pastContainer = document.getElementById("past-trips");
+  upcomingContainer.innerHTML = "";
+  pastContainer.innerHTML = "";
+  const {upcomingTrips, pastTrips} = getSplitTrips();
+  if (upcomingTrips.length === 0) {
+     addNoTripPlaceholder(upcomingContainer, 'Upcoming');
+  } else {
+    addTripCards(upcomingTrips, upcomingContainer);
+  }
+  if(pastTrips.length === 0){
+    addNoTripPlaceholder(pastContainer, 'Past');
+  } else{
+    addTripCards(pastTrips, pastContainer);
   }
 }
 
