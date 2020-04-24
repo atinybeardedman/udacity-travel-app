@@ -86,12 +86,12 @@ app.get("/places", (req, resp) => {
 });
 
 app.post("/addTrip", (req, resp) => {
-  console.log(req.body);
   const { location, date, length, units } = req.body;
   const diff = getDiff(date);
   const weather$ = getWeather(location.lat, location.lng, date, units, diff);
-  const photo$ = getPhoto(location.name, location.countryName);
-  return Promise.all([weather$, photo$]).then(([weather, photo]) =>{
+  const photo$ = getPhoto(`${location.name}+${location.countryName}`);
+  return Promise.all([weather$, photo$])
+    .then(([weather, photo]) => {
       resp.send({
         trip: {
           weather,
@@ -100,38 +100,51 @@ app.post("/addTrip", (req, resp) => {
           length,
           city: location.name,
           country: location.countryName,
-          diff
+          diff,
         },
-      })
-  }
-  );
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
-function getPhoto(city, country) {
+function getPhoto(q) {
   return axios
     .get(pixabayUrl, {
       params: {
         key: pixabayKey,
-        q: `${city}+${country}`,
+        q,
         image_type: "photo",
         category: "travel",
-        orientation: "horizontal"
+        orientation: "horizontal",
       },
     })
     .then((axResp) => {
-      const photoData = axResp.data.hits[0];
-      return photoData.largeImageURL;
+      if (axResp.data.total === 0) {
+        const countryQ = q.substring(q.indexOf("+") + 1);
+        return axios.get(pixabayUrl, {
+          params: {
+            key: pixabayKey,
+            q: countryQ,
+            image_type: "photo",
+            category: "travel",
+            orientation: "horizontal",
+          },
+        });
+      }
+      return axResp;
     })
+    .then(axResp => axResp.data.hits[0].webformatURL)
     .catch((err) => {
       console.log(err);
     });
 }
 
 function getWeather(lat, lon, date, units, diff) {
-  console.log(units);
   if (diff > 16) {
     // use historical data
-    const start_date = moment(date).subtract(1, 'year').format("YYYY-MM-DD");
+    const start_date = moment(date).subtract(1, "year").format("YYYY-MM-DD");
     const end_date = moment(start_date).add(1, "days").format("YYYY-MM-DD");
     return axios
       .get(weatherHistoricalUrl, {
@@ -141,15 +154,16 @@ function getWeather(lat, lon, date, units, diff) {
           lon,
           start_date,
           end_date,
-          units
+          units,
         },
       })
       .then((axResp) => {
         const weatherData = axResp.data.data[0];
         const high_temp = weatherData.max_temp;
         const low_temp = weatherData.min_temp;
-        return { high_temp, low_temp, units};
-      }).catch((err) => {
+        return { high_temp, low_temp, units };
+      })
+      .catch((err) => {
         console.log(err);
       });
   } else {
@@ -161,12 +175,13 @@ function getWeather(lat, lon, date, units, diff) {
           days: diff === 0 ? 1 : diff,
           lat,
           lon,
-          units
+          units,
         },
       })
       .then((axResp) => {
         const weatherData = axResp.data.data;
-        const { high_temp, low_temp } = diff === 0 ? weatherData[0] : weatherData[diff - 1];
+        const { high_temp, low_temp } =
+          diff === 0 ? weatherData[0] : weatherData[diff - 1];
         return { high_temp, low_temp, units };
       })
       .catch((err) => {
