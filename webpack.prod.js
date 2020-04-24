@@ -8,7 +8,7 @@ const OpitimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin');
 module.exports = {
     entry:{
-        app: './src/client/index.js',
+        app: './src/client/app.js',
     },
     mode: 'production',
     optimization: {
