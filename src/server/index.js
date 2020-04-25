@@ -35,10 +35,6 @@ app.get("/", function (req, res) {
   res.sendFile(path.join("dist", "index.html"));
 });
 
-// designates what port the app will listen to for incoming requests
-app.listen(process.env.PORT, function () {
-  console.log("Example app listening on port 8081!");
-});
 
 app.get("/countries", (req, resp) => {
   if (cache.hasOwnProperty("countries")) {
@@ -197,10 +193,4 @@ function getDiff(datestring) {
   return tripStart.diff(now, "days");
 }
 
-function getAverage(list, prop) {
-  let sum = 0;
-  for (const item of list) {
-    sum += item[prop];
-  }
-  return sum / list.length;
-}
+module.exports = {app, getPhoto};
