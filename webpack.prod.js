@@ -24,14 +24,25 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-            }
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: ["file-loader"],
+              },
+              {
+                test: /\.html$/,
+                use: [
+                  {
+                    loader: "html-loader",
+                  },
+                ],
+              },
         ]
     },
     plugins: [
         new HtmlWebPackPlugin({
             template: "./src/client/views/index.html",
             filename: "./index.html",
-            title: 'Travel App',
             chunks: ['app']
         }),
         new MiniCssExtractPlugin({

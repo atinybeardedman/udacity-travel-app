@@ -1,5 +1,15 @@
 @charset "utf-8";
 
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Oswald:wght@300;500&display=swap");
+
+$primary: #93be82;
+$body-background-color: #f0f4ed;
+$grey: #717578;
+
+$body-family: "Manrope", sans-serif;
+$title-family: "Oswald";
+$title-strong-weight: 500;
+
 
 @import "../../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../../node_modules/bulma/sass/base/_all.sass";
@@ -13,9 +23,11 @@
 @import "../../../node_modules/bulma/sass/form/_all.sass";
 @import "../../../node_modules/bulma/sass/components/navbar.sass";
 @import "../../../node_modules/bulma/sass/components/card.sass";
+@import "../../../node_modules/bulma/sass/components/level.sass";
 @import "../../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../../node_modules/bulma/sass/layout/section.sass";
+@import "../../../node_modules/bulma/sass/layout/footer.sass";
 
 #past-trips .card {
-    filter: contrast(0.7);
+  filter: contrast(0.7);
 }
