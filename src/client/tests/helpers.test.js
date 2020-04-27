@@ -1,4 +1,3 @@
-import { TestScheduler } from "jest";
 import { getUnits } from "../js/helpers";
 
 beforeEach(() => {

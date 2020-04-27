@@ -52,10 +52,10 @@ function getCountdown(trip) {
 
 function formatTemp(temp, units) {
   if (units === "I") {
-    return `${temp}  &deg;F`;
+    return `${temp} &deg;F`;
   } else {
-    return `${temp}  &deg;C`;
+    return `${temp} &deg;C`;
   }
 }
 
-export { createCard };
+export { createCard, getCountdown, formatTemp };
