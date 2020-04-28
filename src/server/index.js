@@ -107,12 +107,12 @@ app.post("/addTrip", (req, resp) => {
 
 function getPhoto(city, country, depth = 0) {
   // check for cached value
-  if(cache.hasOwnProperty(`${city}+${country}`)){
+  if (cache.hasOwnProperty(`${city}+${country}`)) {
     const cachedEntry = cache[`${city}+${country}`];
     // check if cached value is still valid
-    if(moment().diff(cachedEntry.date, 'hours') < 24){
+    if (moment().diff(cachedEntry.date, "hours") < 24) {
       return new Promise((res, rej) => {
-        res(cachedEntry.value)
+        res(cachedEntry.value);
       });
     }
   }
@@ -121,16 +121,19 @@ function getPhoto(city, country, depth = 0) {
     image_type: "photo",
     orientation: "horizontal",
   };
-  switch(depth){
+  switch (depth) {
     case 0:
+      // by default look for country and city
       params.q = `${city}+${country}`;
-      params.category = 'travel';
+      params.category = "travel";
       break;
     case 1:
+      // if can't find that, look for country
       params.q = country;
-      params.category = 'travel';
+      params.category = "travel";
       break;
     default:
+      // if can't find that don't restrict to travel
       params.q = country;
   }
   return axios
@@ -139,11 +142,11 @@ function getPhoto(city, country, depth = 0) {
     })
     .then((axResp) => {
       if (axResp.data.total === 0) {
-        if(depth < 2){
+        if (depth < 2) {
           return getPhoto(city, country, depth + 1);
-        }
-       else {
-        return  '../images/placeholder.jpg'
+        } else {
+          // if you can't find anything, just serve the placeholder
+          return "../images/placeholder.jpg";
         }
       }
       return axResp.data.hits[0].webformatURL;
@@ -151,17 +154,16 @@ function getPhoto(city, country, depth = 0) {
     .then((result) => {
       cache[`${city}+${country}`] = {
         value: result,
-        date: moment().format()
-      }
+        date: moment().format(),
+      };
       return result;
-    }
-    )
+    })
     .catch((err) => {
       console.log(err);
     });
 }
 app.get("/getPhoto", (req, resp) => {
-  const {city, country} = req.query;
+  const { city, country } = req.query;
   return getPhoto(city, country)
     .then((photoResp) => {
       resp.send({
@@ -175,7 +177,7 @@ app.get("/getPhoto", (req, resp) => {
 
 function getWeather(lat, lon, date, units, diff) {
   if (diff > 16) {
-    // use historical data
+    // use historical data if trip too far in the future
     const start_date = moment(date).subtract(1, "year").format("YYYY-MM-DD");
     const end_date = moment(start_date).add(1, "days").format("YYYY-MM-DD");
     return axios
@@ -199,7 +201,7 @@ function getWeather(lat, lon, date, units, diff) {
         console.log(err);
       });
   } else {
-    // use forecast
+    // use forecast if trip is within forecasting range
     return axios
       .get(weatherForecastUrl, {
         params: {

@@ -81,43 +81,44 @@ function updateButtonState() {
   return button.disabled;
 }
 
-function addTripCards(trips, container){
-    const frag = document.createDocumentFragment();
-    container.classList.remove('is-centered');
-    for (const trip of trips) {
-      const column = document.createElement("div");
-      column.classList.add("column");
-      column.classList.add("is-one-third-desktop");
-      column.classList.add("is-half-tablet");
-      column.innerHTML = createCard(trip);
-      frag.appendChild(column);
-    }
-    container.appendChild(frag);
+function addTripCards(trips, container) {
+  const frag = document.createDocumentFragment();
+  container.classList.remove("is-centered");
+  for (const trip of trips) {
+    const column = document.createElement("div");
+    column.classList.add("column");
+    column.classList.add("is-one-third-desktop");
+    column.classList.add("is-half-tablet");
+    column.innerHTML = createCard(trip);
+    frag.appendChild(column);
+  }
+  container.appendChild(frag);
 }
 
-function addNoTripPlaceholder(container, type){
-    const column = document.createElement("div");
-      column.classList.add("column");
-      column.classList.add("is-half");
-      column.innerHTML = `<h2 class="title has-text-centered has-text-grey">No ${type} Trips</h2>`;
-      container.classList.add('is-centered');
-      container.appendChild(column);
+function addNoTripPlaceholder(container, type) {
+  const column = document.createElement("div");
+  column.classList.add("column");
+  column.classList.add("is-half");
+  column.innerHTML = `<h2 class="title has-text-centered has-text-grey">No ${type} Trips</h2>`;
+  container.classList.add("is-centered");
+  container.appendChild(column);
 }
 
 function updateTrips() {
+  // update the UI with trips from local storage, or placeholders if no trips are found
   const upcomingContainer = document.getElementById("upcoming-trips");
   const pastContainer = document.getElementById("past-trips");
   upcomingContainer.innerHTML = "";
   pastContainer.innerHTML = "";
-  const {upcomingTrips, pastTrips} = getSplitTrips();
+  const { upcomingTrips, pastTrips } = getSplitTrips();
   if (upcomingTrips.length === 0) {
-     addNoTripPlaceholder(upcomingContainer, 'Upcoming');
+    addNoTripPlaceholder(upcomingContainer, "Upcoming");
   } else {
     addTripCards(upcomingTrips, upcomingContainer);
   }
-  if(pastTrips.length === 0){
-    addNoTripPlaceholder(pastContainer, 'Past');
-  } else{
+  if (pastTrips.length === 0) {
+    addNoTripPlaceholder(pastContainer, "Past");
+  } else {
     addTripCards(pastTrips, pastContainer);
   }
 }

@@ -33,6 +33,7 @@ function createCard(trip) {
 }
 
 function getCountdown(trip) {
+  // get text for countdown on the card. Should be different if trip is future, present, past
   const now = moment();
   const tripStart = moment(trip.date);
   const diff = tripStart.diff(now, "days");
@@ -51,12 +52,12 @@ function getCountdown(trip) {
 }
 
 function formatTemp(temp, units) {
+  // correctly format temperature units on the card
   if (units === "I") {
     return `${temp} &deg;F`;
   } else {
     return `${temp} &deg;C`;
   }
 }
-
 
 export { createCard, getCountdown, formatTemp };
