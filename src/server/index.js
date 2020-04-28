@@ -228,6 +228,4 @@ function getDiff(datestring) {
   return tripStart.diff(now, "days");
 }
 
-getPhoto('Kankan', 'Guinea');
-
 module.exports = { app, getPhoto };

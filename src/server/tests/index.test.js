@@ -1,20 +1,17 @@
 const axios = require('axios');
-const {app, getWeather, getPhoto} = require('../index.js');
+const {getPhoto} = require('../index.js');
 jest.mock('axios');
-test('get photo should return photo', () => {
+test('if no photo found return placeholder', () => {
     expect.assertions(1);
     const resp = {
         data: {
-            total: 1,
+            total: 0,
             hits: [
-                {
-                    webformatURL: 'hello'
-                }
             ]
         }
     };
     axios.get.mockImplementationOnce(() => Promise.resolve(resp));
-    return getPhoto('q').then(data => 
-      expect(data).toBe('hello')
+    return getPhoto('city','country', 2).then(data => 
+      expect(data).toBe('../images/placeholder.jpg')
     )
 })
