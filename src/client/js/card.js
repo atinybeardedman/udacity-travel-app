@@ -58,4 +58,5 @@ function formatTemp(temp, units) {
   }
 }
 
+
 export { createCard, getCountdown, formatTemp };

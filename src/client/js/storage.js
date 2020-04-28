@@ -4,9 +4,27 @@ function getTrips(){
     if(!trips){
         return [];
     } else {
-        return JSON.parse(trips);
+        return JSON.parse(trips)
     }
 }
+
+function updatePhotos(){
+    const promises = getTrips()
+        .map(trip => {
+            const updatedTrip = {...trip};
+            return fetch(`/getPhoto?city=${trip.city}&country=${trip.country}`).then(
+                resp => resp.json()
+            ).then(
+                photo => {
+                    updatedTrip.photo = photo.photo;
+                    return updatedTrip;
+                }
+            )
+            
+        });
+    return Promise.all(promises).then((updatedTrips) => 
+        localStorage.setItem('trips', JSON.stringify(updatedTrips)))
+  }  
 
 function getSplitTrips(){
     const trips = getTrips();
@@ -41,4 +59,5 @@ function sortTrips(tripA, tripB){
     }
 }
 
-export {getTrips, addTrip, getSplitTrips};
+
+export {getTrips, addTrip, getSplitTrips, updatePhotos};

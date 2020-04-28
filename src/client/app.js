@@ -2,6 +2,7 @@ import './styles/main.scss';
 import * as updateUIFns from './js/updateUI';
 import { getFormElements } from './js/helpers'; 
 import { submitForm } from './js/submitForm';
+import { updatePhotos } from './js/storage';
 
 window.addEventListener('DOMContentLoaded', () => {
     const elements = getFormElements();
@@ -16,6 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('submit').addEventListener('click', submitForm);
 updateUIFns.updateCountries();
 updateUIFns.updateDate();
+updatePhotos();
 updateUIFns.updateTrips();
 
 

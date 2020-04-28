@@ -35,7 +35,6 @@ app.get("/", function (req, res) {
   res.sendFile(path.join("dist", "index.html"));
 });
 
-
 app.get("/countries", (req, resp) => {
   if (cache.hasOwnProperty("countries")) {
     resp.send(cache.countries);
@@ -86,7 +85,7 @@ app.post("/addTrip", (req, resp) => {
   const { location, date, length, units } = req.body;
   const diff = getDiff(date);
   const weather$ = getWeather(location.lat, location.lng, date, units, diff);
-  const photo$ = getPhoto(`${location.name}+${location.countryName}`);
+  const photo$ = getPhoto(location.name, location.countryName);
   return Promise.all([weather$, photo$])
     .then(([weather, photo]) => {
       resp.send({
@@ -106,37 +105,73 @@ app.post("/addTrip", (req, resp) => {
     });
 });
 
-function getPhoto(q) {
+function getPhoto(city, country, depth = 0) {
+  // check for cached value
+  if(cache.hasOwnProperty(`${city}+${country}`)){
+    const cachedEntry = cache[`${city}+${country}`];
+    // check if cached value is still valid
+    if(moment().diff(cachedEntry.date, 'hours') < 24){
+      return new Promise((res, rej) => {
+        res(cachedEntry.value)
+      });
+    }
+  }
+  const params = {
+    key: pixabayKey,
+    image_type: "photo",
+    orientation: "horizontal",
+  };
+  switch(depth){
+    case 0:
+      params.q = `${city}+${country}`;
+      params.category = 'travel';
+      break;
+    case 1:
+      params.q = country;
+      params.category = 'travel';
+      break;
+    default:
+      params.q = country;
+  }
   return axios
     .get(pixabayUrl, {
-      params: {
-        key: pixabayKey,
-        q,
-        image_type: "photo",
-        category: "travel",
-        orientation: "horizontal",
-      },
+      params,
     })
     .then((axResp) => {
       if (axResp.data.total === 0) {
-        const countryQ = q.substring(q.indexOf("+") + 1);
-        return axios.get(pixabayUrl, {
-          params: {
-            key: pixabayKey,
-            q: countryQ,
-            image_type: "photo",
-            category: "travel",
-            orientation: "horizontal",
-          },
-        });
+        if(depth < 2){
+          return getPhoto(city, country, depth + 1);
+        }
+       else {
+        return  '../images/placeholder.jpg'
+        }
       }
-      return axResp;
+      return axResp.data.hits[0].webformatURL;
     })
-    .then(axResp => axResp.data.hits[0].webformatURL)
+    .then((result) => {
+      cache[`${city}+${country}`] = {
+        value: result,
+        date: moment().format()
+      }
+      return result;
+    }
+    )
     .catch((err) => {
       console.log(err);
     });
 }
+app.get("/getPhoto", (req, resp) => {
+  const {city, country} = req.query;
+  return getPhoto(city, country)
+    .then((photoResp) => {
+      resp.send({
+        photo: photoResp,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 function getWeather(lat, lon, date, units, diff) {
   if (diff > 16) {
@@ -193,4 +228,6 @@ function getDiff(datestring) {
   return tripStart.diff(now, "days");
 }
 
-module.exports = {app, getPhoto};
+getPhoto('Kankan', 'Guinea');
+
+module.exports = { app, getPhoto };
